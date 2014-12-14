@@ -39,7 +39,7 @@ public class Parser {
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 		Document doc = null;
 		doc = dbBuilder
-				.parse("file:///Users/dushengchen/Documents/shui/run222.xml");
+				.parse("file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run222.xml");
 		/*
 		 * symake\_sample/runsample.xml  (works) 2
 		 * paper/runpaper.xml   (works) 2
@@ -108,8 +108,9 @@ public class Parser {
 			// x.print("");
 			//
 			// x.printRcp("");
+			 
+			 System.out.println();
 			String rcp = x.combinRcp();
-
 			TreeNode t = new TargetTree(null, null, targetName, rcp);
 			map.put(targetName, t);
 			// System.out.println("rcp:\n"+x.combinRcp()+"\n");
