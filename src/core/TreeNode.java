@@ -1,6 +1,5 @@
-package Main;
+package core;
 
-import java.text.RuleBasedCollator;
 import java.util.ArrayList;
 import java.util.Iterator;
 

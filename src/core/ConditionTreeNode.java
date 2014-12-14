@@ -1,4 +1,4 @@
-package Main;
+package core;
 
 import java.util.ArrayList;
 
@@ -13,12 +13,12 @@ public class ConditionTreeNode extends XMLTreeNode {
 	ConditionTreeNode(ConditionTreeNode node) {
 		this(node.getCondition(), node.getValue(), node.getTarget(), node.getPrerequisite(), node.getRcp());
 	}
-	ConditionTreeNode(XMLTreeNode node) {
+	public ConditionTreeNode(XMLTreeNode node) {
 		super(node.getTarget(), node.getPrerequisite(), node.getRcp());
 	}
 
 
-	ConditionTreeNode(String condition, String value, String name) {
+	public ConditionTreeNode(String condition, String value, String name) {
 		super(name);
 		this.condition = condition;
 		this.value = value;

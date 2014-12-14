@@ -1,22 +1,24 @@
 package Main;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import gui.GraphFrame;
+import gui.JTreeFrame;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.xml.bind.ValidationEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import core.ConditionTreeNode;
+import core.TargetTree;
+import core.TreeNode;
+import core.XMLTreeNode;
 
 public class Parser {
 	static String TAG_CONCAT = "CONCAT";
@@ -37,7 +39,7 @@ public class Parser {
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 		Document doc = null;
 		doc = dbBuilder
-				.parse("file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run123.xml");
+				.parse("file:///Users/dushengchen/Documents/shui/run222.xml");
 		/*
 		 * symake\_sample/runsample.xml  (works) 2
 		 * paper/runpaper.xml   (works) 2
@@ -72,8 +74,8 @@ public class Parser {
 					if (pNode.getNodeName().trim().equals(TAG_P)) {
 						for (int p = 0; p < pNode_list.getLength(); p++) {
 							// CONCAT
-							if (pNode_list.item(p).getNodeName().trim()
-									.equals(TAG_CONCAT)) {
+							if (pNode_list.item(p).getNodeName().trim().equals(TAG_CONCAT) 
+									|| pNode_list.item(p).getNodeName().trim().equals(TAG_VALUE)) {
 								preqTree.add(new XMLTreeNode(
 										concatName(pNode_list.item(p))));
 								// SELECT
@@ -149,10 +151,9 @@ public class Parser {
 				root.getpChildren().add(map.get(key));
 			}
 		}
-		root.defLayer(0);
-		JTreeFrame tFrame = new JTreeFrame(root);
+		//root.defLayer(0);
+		JFrame tFrame = new GraphFrame(map);
 
-		root.printAllNode(root);
 
 	}
 
@@ -247,7 +248,9 @@ public class Parser {
 		if (node == null) {
 			return "";
 		}
-		if (node.getNodeName().trim().equals(TAG_CONCAT)) {
+		if (node.getNodeName().trim().equals(TAG_VALUE)) {
+			return node.getTextContent().trim();
+		}else if (node.getNodeName().trim().equals(TAG_CONCAT)) {
 			String left = "";
 			String right = "";
 
@@ -271,11 +274,11 @@ public class Parser {
 			if (node.hasChildNodes()) {
 				NodeList nl = node.getChildNodes();
 				for (int i = 0; i < nl.getLength(); i++) {
-					if (nl.item(0).getNodeName().trim().equals(TAG_CONCAT)) {
-						return concatName(nl.item(0));
-					} else if (nl.item(0).getNodeName().trim()
+					if (nl.item(i).getNodeName().trim().equals(TAG_CONCAT)) {
+						return concatName(nl.item(i));
+					} else if (nl.item(i).getNodeName().trim()
 							.equals(TAG_VALUE)) {
-						return nl.item(0).getTextContent().trim();
+						return nl.item(i).getTextContent().trim();
 					}
 				}
 				return "";

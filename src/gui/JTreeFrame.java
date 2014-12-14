@@ -1,4 +1,4 @@
-package Main;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import core.TreeNode;
 
 public class JTreeFrame extends JFrame {
 	public JTreeFrame(TreeNode n) {

@@ -1,14 +1,14 @@
-package Main;
+package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.util.List;
 
 import javax.swing.JPanel;
+
+import core.TargetTree;
+import core.TreeNode;
 
 /**
  * TODO 同一层结点过多有BUG，应该对每一层的所有结点都进行个数统计，之后才绘制。
