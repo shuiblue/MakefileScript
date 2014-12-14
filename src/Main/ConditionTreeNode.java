@@ -37,22 +37,22 @@ public class ConditionTreeNode extends XMLTreeNode {
 	}
 
 	@Override
-	public void print(String tab) {
-		System.out.println("\n"+tab+">>>>>>>>start>>>>>>>>"+ target);
-		if (target !=null && !target.trim().equals("")) {
-			System.out.println(tab+"target:" + target);
-		}
-		if (target !=null && !target.trim().equals("")) {
-			System.out.println(tab+"if "+condition+" is : "+value);
-		}
-		if (prerequisite != null && !prerequisite.isEmpty()) {
-			for (XMLTreeNode i : prerequisite) {
-				System.out.println(tab+"prerequisite:");
-				i.print(tab+"\t");
-			}
-		}
-
-	}
+//	public void print(String tab) {
+//		System.out.println("\n"+tab+">>>>>>>>start>>>>>>>>"+ target);
+//		if (target !=null && !target.trim().equals("")) {
+//			System.out.println(tab+"target:" + target);
+//		}
+//		if (target !=null && !target.trim().equals("")) {
+//			System.out.println(tab+"if "+condition+" is : "+value);
+//		}
+//		if (prerequisite != null && !prerequisite.isEmpty()) {
+//			for (XMLTreeNode i : prerequisite) {
+//				System.out.println(tab+"prerequisite:");
+//				i.print(tab+"\t");
+//			}
+//		}
+//
+//	}
 	public void printRcp(String tab) { 
 		
 		if (target !=null && !target.trim().equals("")) {
