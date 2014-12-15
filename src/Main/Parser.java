@@ -34,22 +34,16 @@ public class Parser {
 	static String TAG_LEFT = "LEFT";
 	static String TAG_RIGHT = "RIGHT";
 	static String TAG_VALUE = "value";
-	
-	private Map<String, TreeNode>  map = null;
+
+	private Map<String, TreeNode> map = null;
 	TargetTree root = null;
-	
+
 	public Parser(Document doc) throws Exception {
-		/*
-		 * symake\_sample/runsample.xml (works) 2 paper/runpaper.xml (works) 2
-		 * testing/Actiongame/run1112.xml ( preqsNode : cube.h.gch) 3
-		 * chatsystem/chatsys.xml (target[i] = "src/start/MainServer.java"
-		 * (id=840) )1
-		 */
 		NodeList rule_list = doc.getElementsByTagName("RULE");
 		ArrayList<XMLTreeNode> ruleTree = new ArrayList<XMLTreeNode>();
 		String targetName;
 		map = new HashMap<String, TreeNode>();
-		
+
 		// ---------get rule---------
 		for (int i = 0; i < rule_list.getLength(); i++) {
 
@@ -107,22 +101,23 @@ public class Parser {
 			combineRcpLeafs(x);
 			// x.print("");
 			// x.printRcp("");
-//			System.out.println();
+			// System.out.println();
 			String rcp = x.combinRcp();
-			//(TreeNode pParent, ArrayList<TreeNode> pChildren,String name, String rcps)
+			// (TreeNode pParent, ArrayList<TreeNode> pChildren,String name,
+			// String rcps)
 			TreeNode t = new TargetTree(null, null, targetName, rcp);
 			map.put(targetName, t);
-			//System.out.println("rcp:\n"+x.combinRcp()+"\n");
+			// System.out.println("rcp:\n"+x.combinRcp()+"\n");
 		}
-		
-		//-----iterator ruleTree -------
+
+		// -----iterator ruleTree -------
 		for (Iterator<XMLTreeNode> i = ruleTree.iterator(); i.hasNext();) {
 			XMLTreeNode node = i.next();
-			
+
 			for (Iterator<XMLTreeNode> j = node.getPrerequisite().iterator(); j
 					.hasNext();) {
 				XMLTreeNode preqsNode = j.next();
-				Boolean isCondtion =  (preqsNode instanceof ConditionTreeNode);
+				Boolean isCondtion = (preqsNode instanceof ConditionTreeNode);
 				String[] targets = preqsNode.getTarget().split(" ");
 				String a = "";
 				for (int t = 0; t < targets.length; t++) {
@@ -133,14 +128,21 @@ public class Parser {
 						// + targets[t + 1]);
 						// map.get(node.getTarget()).getpChildren()
 						// .add(map.get(a));
-						TargetTree fatherNode = (TargetTree) map.get(node.getTarget());
+						TargetTree fatherNode = (TargetTree) map.get(node
+								.getTarget());
 						TargetTree sonNode = (TargetTree) map.get(a);
 						fatherNode.getpChildren().add(sonNode);
 						sonNode.setpParent(fatherNode);
 						if (isCondtion) {
-							fatherNode.setEdge(sonNode.getName(), ((ConditionTreeNode)preqsNode).getCondition()+" : "+((ConditionTreeNode)preqsNode).getValue());
+							fatherNode.setEdge(
+									sonNode.getName(),
+									((ConditionTreeNode) preqsNode)
+											.getCondition()
+											+ " : "
+											+ ((ConditionTreeNode) preqsNode)
+													.getValue());
 						}
-						
+
 					}
 					// t = t + 1;
 				}
@@ -152,17 +154,17 @@ public class Parser {
 		for (String key : map.keySet()) {
 			if (map.get(key).getpParent() == null) {
 				root.getpChildren().add(map.get(key));
-//				System.out.println();
-//				System.out.println(map.get(key));
+				System.out.println();
+				System.out.println(map.get(key));
 			}
 		}
-//		JFrame tFrame = new GraphFrame(map);
+		// JFrame tFrame = new GraphFrame(map);
 	}
 
 	public Map<String, TreeNode> getParseredMap() {
 		return map;
 	}
-	
+
 	static public ArrayList<XMLTreeNode> combineRcpLeafs(XMLTreeNode root) {
 		ArrayList<XMLTreeNode> add = new ArrayList<XMLTreeNode>();
 		ArrayList<XMLTreeNode> del = new ArrayList<XMLTreeNode>();
@@ -205,12 +207,12 @@ public class Parser {
 		Node sel_list = sele_children.item(0);
 		Node item = sel_list.getChildNodes().item(0);
 		// getNodeByTagInSon sel_list item
-		// -----------  CR  ------------
+		// ----------- CR ------------
 		Node cr = getNodeByTagInSonWideFrist(select, "CR");
 		String condition = "";
 		String val = "";
 		if (cr != null) {
-			//------------ condition -------------
+			// ------------ condition -------------
 			condition = cr.getAttributes().getNamedItem("condition").toString();
 			val = cr.getAttributes().getNamedItem("isNot").toString();
 		}
@@ -220,7 +222,7 @@ public class Parser {
 
 		for (int s = 0; s < sele_children.getLength(); s++) {
 			String concatName = concatName(sele_children.item(s));
-			//-----------TRUE----------
+			// -----------TRUE----------
 			if (sele_children.item(s).getNodeName().trim().equals(TAG_TRUE)) {
 
 				if (concatName == null || concatName.equals("")) {
@@ -230,7 +232,7 @@ public class Parser {
 				trueNode = new ConditionTreeNode(condition,
 						val.equals("isNot=\"0\"") ? "true" : "false",
 						concatName);
-				//----------FALSE-------
+				// ----------FALSE-------
 			} else if (sele_children.item(s).getNodeName().trim()
 					.equals(TAG_FALSE)) {
 
@@ -240,7 +242,7 @@ public class Parser {
 				falseNode = new ConditionTreeNode(condition,
 						val.equals("isNot=\"1\"") ? "false" : "true",
 						concatName);
-				//-------- CONCAT -------
+				// -------- CONCAT -------
 			} else if (sele_children.item(s).getNodeName().trim()
 					.equals(TAG_CONCAT)) {
 

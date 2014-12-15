@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -29,7 +30,8 @@ public class TEST {
 					.newInstance();
 			DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 			Document doc = null;
-			File xmlFile = new File("test/makefile/run7.xml");
+			File xmlFile = new File("test/makefile/run.xml");
+
 			doc = dbBuilder.parse(xmlFile);
 			Parser p = new Parser(doc);
 			Map<String, TreeNode> map = p.getParseredMap();
@@ -60,6 +62,24 @@ public class TEST {
 
 			Assert.assertTrue(nodeB.getpChildren().contains(nodeE));
 			Assert.assertTrue(nodeB.getpChildren().contains(nodeC));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test_easy() {
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
+					.newInstance();
+			DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
+			Document doc = null;
+			File xmlFile = new File("test/easy/abc.xml");
+			doc = dbBuilder.parse(xmlFile);
+			Parser p = new Parser(doc);
+			Map<String, TreeNode> map = p.getParseredMap();
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

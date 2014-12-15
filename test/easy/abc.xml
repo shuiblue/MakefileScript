@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ALL_RULES><RULE target="A"><target-models><CONCAT><LEFT><value>A</value></LEFT><RIGHT><value></value></RIGHT></CONCAT></target-models><PREQS><P><value>B</value></P></PREQS><RCPs><rcp><value>echo a</value></rcp></RCPs></RULE><RULE target="B"><target-models><value>B</value></target-models><PREQS><P><value>C</value></P></PREQS><RCPs><rcp><value>echo b</value></rcp></RCPs></RULE><RULE target="C"><target-models><value>C</value></target-models><PREQS/><RCPs><rcp><value>echo c</value></rcp></RCPs></RULE></ALL_RULES>
