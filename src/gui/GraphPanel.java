@@ -166,44 +166,14 @@ public class GraphPanel extends JPanel {
 				//g.drawLine((int)lineFrom.getX(), (int)lineFrom.getY(), (int)lineTo.getX(), (int)lineTo.getY());
 			}
 		}
-//		int y = n.getLayer()*(vGap+gridHeight)+startY;
-//		int fontY = y + gridHeight - 5;		//5涓烘��璇�寰���虹����硷��浣����浠ラ��杩�FM璁＄����寸簿纭����锛�浣�浼�褰卞�����搴�
-//		
-//		g.setColor(gridColor);
-//		g.fillRect(x, y, gridWidth, gridHeight);	//��荤����圭����煎��
-//		
-//		g.setColor(stringColor);
-//		g.drawString(((TargetTree)n).getName(), x, fontY);		//��荤����圭�����瀛�
-//		
-//		if(n.hasChild()){
-//			List<TreeNode> c = n.getChilds();
-//			int size = n.getChilds().size();
-//			int tempPosx = childAlign == CHILD_ALIGN_RELATIVE 
-//						 ? x+gridWidth/2 - (size*(gridWidth+hGap)-hGap)/2
-//						 : (getWidth() - size*(gridWidth+hGap)+hGap)/2; 
-//			
-//			int i = 0;
-//			for(TreeNode node : c){
-//				int newX = tempPosx+(gridWidth+hGap)*i;	//瀛╁��缁���硅捣濮�X
-//				g.setColor(linkLineColor);
-//				g.drawLine(x+gridWidth/2, y+gridHeight, newX+gridWidth/2, y+gridHeight+vGap);	//��昏����ョ����圭��绾�
-//			
-//				drawAllNode(node, newX, g);
-//				i++;
-//			}
-//		}
+
 	}
 
 	public Color getGridColor() {
 		return gridColor;
 	}
 
-	/**
-	 * 璁剧疆缁���硅�����棰����
-	 * 
-	 * @param gridColor
-	 *            缁���硅�����棰����
-	 */
+	
 	public void setGridColor(Color gridColor) {
 		this.gridColor = gridColor;
 	}
@@ -212,12 +182,7 @@ public class GraphPanel extends JPanel {
 		return linkLineColor;
 	}
 
-	/**
-	 * 璁剧疆缁���硅����ョ嚎���棰����
-	 * 
-	 * @param gridLinkLine
-	 *            缁���硅����ョ嚎���棰����
-	 */
+	
 	public void setLinkLineColor(Color gridLinkLine) {
 		this.linkLineColor = gridLinkLine;
 	}
@@ -226,12 +191,7 @@ public class GraphPanel extends JPanel {
 		return stringColor;
 	}
 
-	/**
-	 * 璁剧疆缁���规��杩扮��棰����
-	 * 
-	 * @param stringColor
-	 *            缁���规��杩扮��棰����
-	 */
+	
 	public void setStringColor(Color stringColor) {
 		this.stringColor = stringColor;
 	}

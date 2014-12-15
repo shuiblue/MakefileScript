@@ -138,7 +138,7 @@ public class Parser {
 						fatherNode.getpChildren().add(sonNode);
 						sonNode.setpParent(fatherNode);
 						if (isCondtion) {
-							fatherNode.setEdge(sonNode.getName(), ((ConditionTreeNode)preqsNode).getCondition());
+							fatherNode.setEdge(sonNode.getName(), ((ConditionTreeNode)preqsNode).getCondition()+" : "+((ConditionTreeNode)preqsNode).getValue());
 						}
 						
 					}

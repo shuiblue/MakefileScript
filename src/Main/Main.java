@@ -17,7 +17,7 @@ public class Main {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 		Document doc = null;
-		File xmlFile = new File("test/makefile/run6.xml");
+		File xmlFile = new File("test/makefile/run7.xml");
 		doc = dbBuilder.parse(xmlFile);
 		
 		Parser p = new Parser(doc);
