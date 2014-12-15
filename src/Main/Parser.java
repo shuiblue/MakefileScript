@@ -41,44 +41,43 @@ public class Parser {
 		doc = dbBuilder
 				.parse("file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run222.xml");
 		/*
-		 * symake\_sample/runsample.xml  (works) 2
-		 * paper/runpaper.xml   (works) 2
+		 * symake\_sample/runsample.xml (works) 2 paper/runpaper.xml (works) 2
 		 * testing/Actiongame/run1112.xml ( preqsNode : cube.h.gch) 3
-		 * chatsystem/chatsys.xml (target[i] = "src/start/MainServer.java" (id=840)	)1
-		 * 
+		 * chatsystem/chatsys.xml (target[i] = "src/start/MainServer.java"
+		 * (id=840) )1
 		 */
 		NodeList rule_list = doc.getElementsByTagName("RULE");
 		ArrayList<XMLTreeNode> ruleTree = new ArrayList<XMLTreeNode>();
 
-		// LinkedHashMap<String, TreeNode> map = new LinkedHashMap<String,
-		// TreeNode>();
 		HashMap<String, TreeNode> map = new HashMap<String, TreeNode>();
-		// get rule
+		// ---------get rule---------
 		for (int i = 0; i < rule_list.getLength(); i++) {
 
 			ArrayList<XMLTreeNode> rcpTree = new ArrayList<XMLTreeNode>();
 			ArrayList<XMLTreeNode> preqTree = new ArrayList<XMLTreeNode>();
 			String targetName = "";
 
-			// get target
+			// --------get target----------
 			Node targetNode = getNodeByTagInSon(rule_list.item(i), TAG_TARGET);
 			targetName = concatName(targetNode);// insert if
 
-			// get PREQS
+			// --------get PREQS-------
 			Node preqsNode = getNodeByTagInSon(rule_list.item(i), TAG_PREQS);
 			if (preqsNode.hasChildNodes()) {
 				for (int t = 0; t < preqsNode.getChildNodes().getLength(); t++) {
 					Node pNode = preqsNode.getChildNodes().item(t);
 					NodeList pNode_list = pNode.getChildNodes();
-					// P
+					// ----------P----------
 					if (pNode.getNodeName().trim().equals(TAG_P)) {
 						for (int p = 0; p < pNode_list.getLength(); p++) {
-							// CONCAT
-							if (pNode_list.item(p).getNodeName().trim().equals(TAG_CONCAT) 
-									|| pNode_list.item(p).getNodeName().trim().equals(TAG_VALUE)) {
+							// ---------CONCAT-------
+							if (pNode_list.item(p).getNodeName().trim()
+									.equals(TAG_CONCAT)
+									|| pNode_list.item(p).getNodeName().trim()
+											.equals(TAG_VALUE)) {
 								preqTree.add(new XMLTreeNode(
 										concatName(pNode_list.item(p))));
-								// SELECT
+								// ----------SELECT-----------
 							} else if (pNode_list.item(p).getNodeName().trim()
 									.equals(TAG_SELECT)) {
 
@@ -90,6 +89,8 @@ public class Parser {
 					}
 				}
 			}
+
+			// ------------ get RCP ----------
 			Node rpcsNode = getNodeByTagInSon(rule_list.item(i), TAG_RCP);
 			if (rpcsNode.hasChildNodes()) {
 				for (int t = 0; t < rpcsNode.getChildNodes().getLength(); t++) {
@@ -101,38 +102,35 @@ public class Parser {
 					// System.out.println();
 				}
 			}
-
+			// --------- built XMLTreeNode --------
 			XMLTreeNode x = new XMLTreeNode(targetName, preqTree, rcpTree);
-			ruleTree.add(x);
+			ruleTree.add(x); // add target tree to rule
 			combineRcpLeafs(x);
 			// x.print("");
-			//
 			// x.printRcp("");
-			 
-			 System.out.println();
+			System.out.println();
 			String rcp = x.combinRcp();
+			//(TreeNode pParent, ArrayList<TreeNode> pChildren,String name, String rcps)
 			TreeNode t = new TargetTree(null, null, targetName, rcp);
 			map.put(targetName, t);
-			// System.out.println("rcp:\n"+x.combinRcp()+"\n");
+			//System.out.println("rcp:\n"+x.combinRcp()+"\n");
 		}
+		
+		//-----iterator ruleTree -------
 		for (Iterator<XMLTreeNode> i = ruleTree.iterator(); i.hasNext();) {
 			XMLTreeNode node = i.next();
-
+			
 			for (Iterator<XMLTreeNode> j = node.getPrerequisite().iterator(); j
 					.hasNext();) {
 				XMLTreeNode preqsNode = j.next();
-
 				String[] targets = preqsNode.getTarget().split(" ");
 				String a = "";
 				for (int t = 0; t < targets.length; t++) {
-					// work for paper example
-					a = targets[t]  ;
-							//+ " " + targets[t + 1];
-
-					// System.out.println(a);
+					a = targets[t];
+					// work for paper example + " " + targets[t + 1];
 					if (map.get(a) != null) {
 						((TargetTree) map.get(a)).setName(targets[t]);
-							//	+ targets[t + 1]);
+						// + targets[t + 1]);
 						// map.get(node.getTarget()).getpChildren()
 						// .add(map.get(a));
 						TreeNode fatherNode = map.get(node.getTarget());
@@ -140,7 +138,7 @@ public class Parser {
 						fatherNode.getpChildren().add(sonNode);
 						sonNode.setpParent(fatherNode);
 					}
-					//t = t + 1;
+					// t = t + 1;
 				}
 			}
 		}
@@ -152,16 +150,15 @@ public class Parser {
 				root.getpChildren().add(map.get(key));
 			}
 		}
-		//root.defLayer(0);
+		// root.defLayer(0);
 		JFrame tFrame = new GraphFrame(map);
-
-
 	}
 
 	static public ArrayList<XMLTreeNode> combineRcpLeafs(XMLTreeNode root) {
 		ArrayList<XMLTreeNode> add = new ArrayList<XMLTreeNode>();
 		ArrayList<XMLTreeNode> del = new ArrayList<XMLTreeNode>();
 		ArrayList<XMLTreeNode> tmp = null;
+
 		if (root.getRcp() != null) {
 			// ArrayList<XMLTreeNode> copy = new ArrayList<XMLTreeNode>();
 			// copy.addAll(root.getRcp());
@@ -198,12 +195,13 @@ public class Parser {
 		NodeList sele_children = select.getChildNodes();
 		Node sel_list = sele_children.item(0);
 		Node item = sel_list.getChildNodes().item(0);
-		// ����ע�⣬getNodeByTagInSon����������㷨������������ȷ��ǰ���ǣ�sel_list item
-		// cr���Ǹ��ڵ�ĵ�һ����Ҷ�ӽڵ�
+		// getNodeByTagInSon sel_list item
+		// -----------  CR  ------------
 		Node cr = getNodeByTagInSonWideFrist(select, "CR");
 		String condition = "";
 		String val = "";
 		if (cr != null) {
+			//------------ condition -------------
 			condition = cr.getAttributes().getNamedItem("condition").toString();
 			val = cr.getAttributes().getNamedItem("isNot").toString();
 		}
@@ -213,6 +211,7 @@ public class Parser {
 
 		for (int s = 0; s < sele_children.getLength(); s++) {
 			String concatName = concatName(sele_children.item(s));
+			//-----------TRUE----------
 			if (sele_children.item(s).getNodeName().trim().equals(TAG_TRUE)) {
 
 				if (concatName == null || concatName.equals("")) {
@@ -222,6 +221,7 @@ public class Parser {
 				trueNode = new ConditionTreeNode(condition,
 						val.equals("isNot=\"0\"") ? "true" : "false",
 						concatName);
+				//----------FALSE-------
 			} else if (sele_children.item(s).getNodeName().trim()
 					.equals(TAG_FALSE)) {
 
@@ -231,6 +231,7 @@ public class Parser {
 				falseNode = new ConditionTreeNode(condition,
 						val.equals("isNot=\"1\"") ? "false" : "true",
 						concatName);
+				//-------- CONCAT -------
 			} else if (sele_children.item(s).getNodeName().trim()
 					.equals(TAG_CONCAT)) {
 
@@ -251,7 +252,7 @@ public class Parser {
 		}
 		if (node.getNodeName().trim().equals(TAG_VALUE)) {
 			return node.getTextContent().trim();
-		}else if (node.getNodeName().trim().equals(TAG_CONCAT)) {
+		} else if (node.getNodeName().trim().equals(TAG_CONCAT)) {
 			String left = "";
 			String right = "";
 
@@ -364,8 +365,8 @@ public class Parser {
 				NodeList sele_children = nodeI.getChildNodes();
 				Node sel_list = sele_children.item(0);
 				Node item = sel_list.getChildNodes().item(0);
-				// ����ע�⣬getNodeByTagInSon����������㷨������������ȷ��ǰ���ǣ�sel_list
-				// item cr���Ǹ��ڵ�ĵ�һ����Ҷ�ӽڵ�
+				// getNodeByTagInSon sel_list
+				// item cr
 				Node cr = getNodeByTagInSonWideFrist(n, "CR");
 				String condition = "";
 				String val = "";

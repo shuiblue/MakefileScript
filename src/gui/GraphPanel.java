@@ -34,8 +34,8 @@ public class GraphPanel extends JPanel {
 
 	private Font font = new Font("微软雅黑", Font.BOLD, 14); // 描述结点的字体
 
-	private Color gridColor = Color.BLACK; // 结点背景颜色
-	private Color linkLineColor = Color.RED; // 结点连线颜色
+	private Color gridColor = Color.PINK; // 结点背景颜色
+	private Color linkLineColor = Color.green; // 结点连线颜色
 	private Color stringColor = Color.WHITE; // 结点描述文字的颜色
 
 	/**
@@ -263,7 +263,7 @@ public class GraphPanel extends JPanel {
         //实心箭头  
         g2.fill(triangle);  
         //非实心箭头  
-        //g2.draw(triangle);  
+       // g2.draw(triangle);  
   
     }  
 	 // 计算  
