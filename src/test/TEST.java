@@ -9,15 +9,12 @@ public class TEST {
 
 	@Test
 	public void test() {
-		int a=1;
-		int b=2
-; Assert.assertEquals(3, a+b);			
+		String xml = "file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run5.xml";
+		String make_output = "";
+		String parseXml_output = "";
+				
+				
+; Assert.assertEquals(make_output, parseXml_output);			
 	}
-	@Test
-	public void test2() {
-		int a=4;
-		int b=2
-; Assert.assertEquals(3, a+b);			
-	}
-
+	
 }

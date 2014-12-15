@@ -42,7 +42,6 @@ public class XMLTreeNode {
 //	}
 
 	public String combinRcp() { 
-
 		String combine = "";
 		if (rcp != null && !rcp.isEmpty()) {
 			for (XMLTreeNode i : rcp) {
@@ -50,10 +49,10 @@ public class XMLTreeNode {
 					combine += i.combinRcp();
 				}
 			}
-
 		}
 		if (target !=null) {
-			return target+" " + combine;
+		return target+" " + combine;
+			//return  combine;
 		} 
 		return combine;
 		

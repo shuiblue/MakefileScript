@@ -33,13 +33,17 @@ public class Parser {
 	static String TAG_RIGHT = "RIGHT";
 	static String TAG_VALUE = "value";
 
-	public static void main(String[] args) throws Exception {
+//	public static void main(String []args){
+//		
+//	}
+	public static void   main(String []args) throws Exception {
 
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 		Document doc = null;
-		doc = dbBuilder
-				.parse("file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run222.xml");
+		doc = dbBuilder.parse("file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run5.xml");
+		
+		
 		/*
 		 * symake\_sample/runsample.xml (works) 2 paper/runpaper.xml (works) 2
 		 * testing/Actiongame/run1112.xml ( preqsNode : cube.h.gch) 3
@@ -148,10 +152,16 @@ public class Parser {
 		for (String key : map.keySet()) {
 			if (map.get(key).getpParent() == null) {
 				root.getpChildren().add(map.get(key));
+				System.out.println();
+				System.out.println(map.get(key));
 			}
 		}
 		// root.defLayer(0);
 		JFrame tFrame = new GraphFrame(map);
+		
+		
+		
+		
 	}
 
 	static public ArrayList<XMLTreeNode> combineRcpLeafs(XMLTreeNode root) {
