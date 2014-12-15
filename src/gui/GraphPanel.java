@@ -1,13 +1,14 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -16,50 +17,51 @@ import core.TargetTree;
 import core.TreeNode;
 
 /**
- * TODO 同一层结点过多有BUG，应该对每一层的所有结点都进行个数统计，之后才绘制。
+ * TODO ���涓�灞�缁���硅��澶����BUG锛�搴�璇ュ�规��涓�灞����������缁���归�借��琛�涓���扮��璁★��涔�������缁���躲��
  * 
  * @author John
  *
  */
 public class GraphPanel extends JPanel {
 
-	private Map<String, TreeNode> map; // 保存图上所有点
-	private int gridWidth = 100; // 每个结点的宽度
-	private int gridHeight = 20; // 每个结点的高度
+	private Map<String, TreeNode> map; // 淇�瀛���句�����������
+	private int gridWidth = 50; // 姣�涓�缁���圭��瀹藉害
+	private int gridHeight = 20; // 姣�涓�缁���圭��楂�搴�
 
 
-	private int childAlign; // 孩子对齐方式
-	//定义怎么画，
-	public static int STYLE_CIRCLE = 1; //画一个圆圈
+	private int childAlign; // 瀛╁��瀵归����瑰��
+	//瀹�涔����涔���伙��
+	public static int STYLE_CIRCLE = 1; //��讳��涓�������
 
-	private Font font = new Font("微软雅黑", Font.BOLD, 14); // 描述结点的字体
+	private Font font = new Font("寰�杞����榛�", Font.BOLD, 14); // ���杩扮����圭��瀛�浣�
 
-	private Color gridColor = Color.PINK; // 结点背景颜色
-	private Color linkLineColor = Color.green; // 结点连线颜色
-	private Color stringColor = Color.WHITE; // 结点描述文字的颜色
+	private Color gridColor = Color.PINK; // 缁���硅�����棰����
+	private Color linkLineColor = Color.green; // 缁���硅��绾块�����
+	private Color stringColor = Color.WHITE; // 缁���规��杩版��瀛����棰����
+	private Color conditionColor = Color.orange;
 
 	/**
-	 * 默认构造
+	 * 榛�璁ゆ�����
 	 */
 	public GraphPanel() {
 		this(STYLE_CIRCLE);
 	}
 
 	/**
-	 * 根据传入的Node绘制树，以绝对居中的方式绘制
+	 * ��规��浼���ョ��Node缁���舵��锛�浠ョ��瀵瑰��涓������瑰��缁����
 	 * 
 	 * @param n
-	 *            要绘制的树
+	 *            瑕�缁���剁�����
 	 */
 	public GraphPanel(Map<String, TreeNode> n) {
 		this(n, STYLE_CIRCLE);
 	}
 
 	/**
-	 * 设置要绘制时候的对齐策略
+	 * 璁剧疆瑕�缁���舵�跺�����瀵归��绛����
 	 * 
 	 * @param childAlign
-	 *            对齐策略
+	 *            瀵归��绛����
 	 * @see tree.TreePanel#CHILD_ALIGN_RELATIVE
 	 * @see tree.TreePanel#CHILD_ALIGN_ABSOLUTE
 	 */
@@ -68,12 +70,12 @@ public class GraphPanel extends JPanel {
 	}
 
 	/**
-	 * 根据孩子对齐策略childAlign绘制的树的根结点n
+	 * ��规��瀛╁��瀵归��绛����childAlign缁���剁����������圭�����n
 	 * 
 	 * @param n
-	 *            要绘制的树的根结点
+	 *            瑕�缁���剁����������圭�����
 	 * @param childAlign
-	 *            对齐策略
+	 *            瀵归��绛����
 	 */
 	public GraphPanel(Map<String, TreeNode> n, int childAlign) {
 		super();
@@ -83,16 +85,16 @@ public class GraphPanel extends JPanel {
 	}
 
 	/**
-	 * 设置用于绘制的树
+	 * 璁剧疆��ㄤ��缁���剁�����
 	 * 
 	 * @param n
-	 *            用于绘制的树的
+	 *            ��ㄤ��缁���剁��������
 	 */
 	public void setGraph(Map<String, TreeNode> n) {
 		map = n;
 	}
 
-	// 重写而已，调用自己的绘制方法
+	// ���������宸诧��璋���ㄨ��宸辩��缁���舵�规��
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setFont(font);
@@ -100,14 +102,14 @@ public class GraphPanel extends JPanel {
 	}
 
 	/**
-	 * 递归绘制整棵树
+	 * ���褰�缁���舵�存５���
 	 * 
 	 * @param n
-	 *            被绘制的Node
+	 *            琚�缁���剁��Node
 	 * @param xPos
-	 *            根节点的绘制X位置
+	 *            ��硅����圭��缁����X浣�缃�
 	 * @param g
-	 *            绘图上下文环境
+	 *            缁���句��涓�������澧�
 	 */
 	public void drawAllNode(Graphics g){
 		if (map == null) {
@@ -132,9 +134,9 @@ public class GraphPanel extends JPanel {
 			int fontY = nodeStartY + gridHeight/2 + 5;	
 			
 			g.setColor(gridColor);
-			g.fillRect(nodeStartX, nodeStartY, gridWidth, gridHeight);	//画结点的格子
+			g.fillRect(nodeStartX, nodeStartY, gridWidth, gridHeight);	//��荤����圭����煎��
 			g.setColor(stringColor);
-			g.drawString(((TargetTree)map.get(key)).getName(), fontX, fontY);		//画结点的名字
+			g.drawString(((TargetTree)map.get(key)).getName(), fontX, fontY) ;		//��荤����圭�����瀛�
 			beginAngle += intervalAngle;
 			
 			position.put(((TargetTree)map.get(key)).getName(), new Point(nodeCentreX, nodeCentreY));
@@ -152,18 +154,26 @@ public class GraphPanel extends JPanel {
 				son = (TargetTree)child;
 				lineTo = position.get(son.getName());
 				g.setColor(linkLineColor);
-				drawAL((int)lineFrom.getX(), (int)lineFrom.getY(), (int)lineTo.getX(), (int)lineTo.getY(), (Graphics2D) g);
+				Boolean isCondition = node.getEdge().containsKey(son.getName());
+				drawAL((int)lineFrom.getX(), (int)lineFrom.getY(), (int)lineTo.getX(), (int)lineTo.getY(), (Graphics2D) g, isCondition);
+				if (isCondition) {
+					int condX = (int) ((lineFrom.getX() + lineTo.getX())/2) - gridWidth/2;
+					int condY = (int) ((lineFrom.getY() + lineTo.getY())/2) - gridHeight/2;
+					g.setColor(this.conditionColor);
+					g.drawString(node.getEdge().get(son.getName()), condX, condY);
+				}
+
 				//g.drawLine((int)lineFrom.getX(), (int)lineFrom.getY(), (int)lineTo.getX(), (int)lineTo.getY());
 			}
 		}
 //		int y = n.getLayer()*(vGap+gridHeight)+startY;
-//		int fontY = y + gridHeight - 5;		//5为测试得出的值，你可以通过FM计算更精确的，但会影响速度
+//		int fontY = y + gridHeight - 5;		//5涓烘��璇�寰���虹����硷��浣����浠ラ��杩�FM璁＄����寸簿纭����锛�浣�浼�褰卞�����搴�
 //		
 //		g.setColor(gridColor);
-//		g.fillRect(x, y, gridWidth, gridHeight);	//画结点的格子
+//		g.fillRect(x, y, gridWidth, gridHeight);	//��荤����圭����煎��
 //		
 //		g.setColor(stringColor);
-//		g.drawString(((TargetTree)n).getName(), x, fontY);		//画结点的名字
+//		g.drawString(((TargetTree)n).getName(), x, fontY);		//��荤����圭�����瀛�
 //		
 //		if(n.hasChild()){
 //			List<TreeNode> c = n.getChilds();
@@ -174,9 +184,9 @@ public class GraphPanel extends JPanel {
 //			
 //			int i = 0;
 //			for(TreeNode node : c){
-//				int newX = tempPosx+(gridWidth+hGap)*i;	//孩子结点起始X
+//				int newX = tempPosx+(gridWidth+hGap)*i;	//瀛╁��缁���硅捣濮�X
 //				g.setColor(linkLineColor);
-//				g.drawLine(x+gridWidth/2, y+gridHeight, newX+gridWidth/2, y+gridHeight+vGap);	//画连接结点的线
+//				g.drawLine(x+gridWidth/2, y+gridHeight, newX+gridWidth/2, y+gridHeight+vGap);	//��昏����ョ����圭��绾�
 //			
 //				drawAllNode(node, newX, g);
 //				i++;
@@ -189,10 +199,10 @@ public class GraphPanel extends JPanel {
 	}
 
 	/**
-	 * 设置结点背景颜色
+	 * 璁剧疆缁���硅�����棰����
 	 * 
 	 * @param gridColor
-	 *            结点背景颜色
+	 *            缁���硅�����棰����
 	 */
 	public void setGridColor(Color gridColor) {
 		this.gridColor = gridColor;
@@ -203,10 +213,10 @@ public class GraphPanel extends JPanel {
 	}
 
 	/**
-	 * 设置结点连接线的颜色
+	 * 璁剧疆缁���硅����ョ嚎���棰����
 	 * 
 	 * @param gridLinkLine
-	 *            结点连接线的颜色
+	 *            缁���硅����ョ嚎���棰����
 	 */
 	public void setLinkLineColor(Color gridLinkLine) {
 		this.linkLineColor = gridLinkLine;
@@ -217,31 +227,31 @@ public class GraphPanel extends JPanel {
 	}
 
 	/**
-	 * 设置结点描述的颜色
+	 * 璁剧疆缁���规��杩扮��棰����
 	 * 
 	 * @param stringColor
-	 *            结点描述的颜色
+	 *            缁���规��杩扮��棰����
 	 */
 	public void setStringColor(Color stringColor) {
 		this.stringColor = stringColor;
 	}
 	
-	private static void drawAL(int sx, int sy, int ex, int ey, Graphics2D g2)  
+	private static void drawAL(int sx, int sy, int ex, int ey, Graphics2D g2, Boolean isDotted)  
     {  
   
-        double H = 10; // 箭头高度  
-        double L = 4; // 底边的一半  
+        double H = 10; // 绠�澶撮��搴�  
+        double L = 4; // 搴�杈圭��涓����  
         int x3 = 0;  
         int y3 = 0;  
         int x4 = 0;  
         int y4 = 0;  
-        double awrad = Math.atan(L / H); // 箭头角度  
-        double arraow_len = Math.sqrt(L * L + H * H); // 箭头的长度  
+        double awrad = Math.atan(L / H); // 绠�澶磋��搴�  
+        double arraow_len = Math.sqrt(L * L + H * H); // 绠�澶寸����垮害  
         double[] arrXY_1 = rotateVec(ex - sx, ey - sy, awrad, true, arraow_len);  
         double[] arrXY_2 = rotateVec(ex - sx, ey - sy, -awrad, true, arraow_len);  
-        double x_3 = ex - arrXY_1[0]; // (x3,y3)是第一端点  
+        double x_3 = ex - arrXY_1[0]; // (x3,y3)���绗�涓�绔����  
         double y_3 = ey - arrXY_1[1];  
-        double x_4 = ex - arrXY_2[0]; // (x4,y4)是第二端点  
+        double x_4 = ex - arrXY_2[0]; // (x4,y4)���绗�浜�绔����  
         double y_4 = ey - arrXY_2[1];  
   
         Double X3 = new Double(x_3);  
@@ -252,26 +262,36 @@ public class GraphPanel extends JPanel {
         x4 = X4.intValue();  
         Double Y4 = new Double(y_4);  
         y4 = Y4.intValue();  
-        // 画线  
-        g2.drawLine(sx, sy, ex, ey);  
+        // ��荤嚎  
+        if (isDotted) {
+            Stroke rev = g2.getStroke();
+            Stroke dash = new BasicStroke(1.5f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,
+            		3.5f,new float[]{15,10,},0f);
+            g2.setStroke(dash);
+            g2.drawLine(sx, sy, ex, ey); 
+            g2.setStroke(rev);
+        } else {
+        	 g2.drawLine(sx, sy, ex, ey); 
+        }
+
         //  
         GeneralPath triangle = new GeneralPath();  
         triangle.moveTo(ex, ey);  
         triangle.lineTo(x3, y3);  
         triangle.lineTo(x4, y4);  
         triangle.closePath();  
-        //实心箭头  
+        //瀹�蹇�绠�澶�  
         g2.fill(triangle);  
-        //非实心箭头  
+        //���瀹�蹇�绠�澶�  
        // g2.draw(triangle);  
   
     }  
-	 // 计算  
+	 // 璁＄��  
 	private static double[] rotateVec(int px, int py, double ang,  
             boolean isChLen, double newLen) {  
   
         double mathstr[] = new double[2];  
-        // 矢量旋转函数，参数含义分别是x分量、y分量、旋转角、是否改变长度、新长度  
+        // ��㈤�����杞���芥�帮�������板��涔����������x���������y������������杞�瑙������������瑰����垮害�����伴�垮害  
         double vx = px * Math.cos(ang) - py * Math.sin(ang);  
         double vy = px * Math.sin(ang) + py * Math.cos(ang);  
         if (isChLen) {  

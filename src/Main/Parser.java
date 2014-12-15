@@ -3,9 +3,11 @@ package Main;
 import gui.GraphFrame;
 import gui.JTreeFrame;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.xml.parsers.DocumentBuilder;
@@ -32,18 +34,11 @@ public class Parser {
 	static String TAG_LEFT = "LEFT";
 	static String TAG_RIGHT = "RIGHT";
 	static String TAG_VALUE = "value";
-
-//	public static void main(String []args){
-//		
-//	}
-	public static void   main(String []args) throws Exception {
-
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-		Document doc = null;
-		doc = dbBuilder.parse("file:///Users/shuruiz/Documents/SPL/Symake/samples/a/run5.xml");
-		
-		
+	
+	private Map<String, TreeNode>  map = null;
+	TargetTree root = null;
+	
+	public Parser(Document doc) throws Exception {
 		/*
 		 * symake\_sample/runsample.xml (works) 2 paper/runpaper.xml (works) 2
 		 * testing/Actiongame/run1112.xml ( preqsNode : cube.h.gch) 3
@@ -52,14 +47,14 @@ public class Parser {
 		 */
 		NodeList rule_list = doc.getElementsByTagName("RULE");
 		ArrayList<XMLTreeNode> ruleTree = new ArrayList<XMLTreeNode>();
-
-		HashMap<String, TreeNode> map = new HashMap<String, TreeNode>();
+		String targetName;
+		map = new HashMap<String, TreeNode>();
+		
 		// ---------get rule---------
 		for (int i = 0; i < rule_list.getLength(); i++) {
 
 			ArrayList<XMLTreeNode> rcpTree = new ArrayList<XMLTreeNode>();
 			ArrayList<XMLTreeNode> preqTree = new ArrayList<XMLTreeNode>();
-			String targetName = "";
 
 			// --------get target----------
 			Node targetNode = getNodeByTagInSon(rule_list.item(i), TAG_TARGET);
@@ -112,7 +107,7 @@ public class Parser {
 			combineRcpLeafs(x);
 			// x.print("");
 			// x.printRcp("");
-			System.out.println();
+//			System.out.println();
 			String rcp = x.combinRcp();
 			//(TreeNode pParent, ArrayList<TreeNode> pChildren,String name, String rcps)
 			TreeNode t = new TargetTree(null, null, targetName, rcp);
@@ -127,6 +122,7 @@ public class Parser {
 			for (Iterator<XMLTreeNode> j = node.getPrerequisite().iterator(); j
 					.hasNext();) {
 				XMLTreeNode preqsNode = j.next();
+				Boolean isCondtion =  (preqsNode instanceof ConditionTreeNode);
 				String[] targets = preqsNode.getTarget().split(" ");
 				String a = "";
 				for (int t = 0; t < targets.length; t++) {
@@ -137,33 +133,36 @@ public class Parser {
 						// + targets[t + 1]);
 						// map.get(node.getTarget()).getpChildren()
 						// .add(map.get(a));
-						TreeNode fatherNode = map.get(node.getTarget());
-						TreeNode sonNode = map.get(a);
+						TargetTree fatherNode = (TargetTree) map.get(node.getTarget());
+						TargetTree sonNode = (TargetTree) map.get(a);
 						fatherNode.getpChildren().add(sonNode);
 						sonNode.setpParent(fatherNode);
+						if (isCondtion) {
+							fatherNode.setEdge(sonNode.getName(), ((ConditionTreeNode)preqsNode).getCondition());
+						}
+						
 					}
 					// t = t + 1;
 				}
 			}
 		}
-		TargetTree root = new TargetTree(null, new ArrayList<TreeNode>());
+		root = new TargetTree(null, new ArrayList<TreeNode>());
 		root.setName("root");
 
 		for (String key : map.keySet()) {
 			if (map.get(key).getpParent() == null) {
 				root.getpChildren().add(map.get(key));
-				System.out.println();
-				System.out.println(map.get(key));
+//				System.out.println();
+//				System.out.println(map.get(key));
 			}
 		}
-		// root.defLayer(0);
-		JFrame tFrame = new GraphFrame(map);
-		
-		
-		
-		
+//		JFrame tFrame = new GraphFrame(map);
 	}
 
+	public Map<String, TreeNode> getParseredMap() {
+		return map;
+	}
+	
 	static public ArrayList<XMLTreeNode> combineRcpLeafs(XMLTreeNode root) {
 		ArrayList<XMLTreeNode> add = new ArrayList<XMLTreeNode>();
 		ArrayList<XMLTreeNode> del = new ArrayList<XMLTreeNode>();
