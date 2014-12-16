@@ -20,28 +20,28 @@ public class XMLTreeNode {
 		this.rcp = rcp;
 	}
 
-//	public void print(String tab) {
-//		System.out.println("\n"+tab+">>>>>>>>start>>>>>>>>"+ target);
-//		if (target !=null && !target.trim().equals("")) {
-//			System.out.println(tab+"target:" + target);
-//		}
-//		if (prerequisite != null && !prerequisite.isEmpty()) {
-//			for (XMLTreeNode i : prerequisite) {
-//				System.out.println(tab+"prerequisite:");
-//				i.print(tab+"\t");
-//			}
-//		}
-//	}
-//	public void printPreqs(String tab){
-//		if (prerequisite != null && !prerequisite.isEmpty()) {
-//			for (XMLTreeNode i : prerequisite) {
-//				System.out.print(tab+"prerequisite:");
-//				i.printPreqs(tab+"\t");
-//			}
-//		}
-//	}
+	// public void print(String tab) {
+	// System.out.println("\n"+tab+">>>>>>>>start>>>>>>>>"+ target);
+	// if (target !=null && !target.trim().equals("")) {
+	// System.out.println(tab+"target:" + target);
+	// }
+	// if (prerequisite != null && !prerequisite.isEmpty()) {
+	// for (XMLTreeNode i : prerequisite) {
+	// System.out.println(tab+"prerequisite:");
+	// i.print(tab+"\t");
+	// }
+	// }
+	// }
+	// public void printPreqs(String tab){
+	// if (prerequisite != null && !prerequisite.isEmpty()) {
+	// for (XMLTreeNode i : prerequisite) {
+	// System.out.print(tab+"prerequisite:");
+	// i.printPreqs(tab+"\t");
+	// }
+	// }
+	// }
 
-	public String combinRcp() { 
+	public String combinRcp() {
 		String combine = "";
 		if (rcp != null && !rcp.isEmpty()) {
 			for (XMLTreeNode i : rcp) {
@@ -50,17 +50,18 @@ public class XMLTreeNode {
 				}
 			}
 		}
-		if (target !=null) {
-		return target+" " + combine;
-			//return  combine;
-		} 
+		if (target != null) {
+			//System.out.println(combine);
+			return target + " " + combine;
+
+		}
 		return combine;
-		
+
 	}
-	
-	public void printRcp(String tab) { 
-		if (target !=null && !target.trim().equals("")&&rcp==null) {
-			System.out.print(" "+target);
+
+	public void printRcp(String tab) {
+		if (target != null && !target.trim().equals("") && rcp == null) {
+			System.out.print(" " + target);
 		}
 		if (rcp != null && !rcp.isEmpty()) {
 			for (XMLTreeNode i : rcp) {
@@ -70,6 +71,7 @@ public class XMLTreeNode {
 			}
 		}
 	}
+
 	public String getTarget() {
 		return target;
 	}

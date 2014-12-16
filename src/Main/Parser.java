@@ -37,6 +37,7 @@ public class Parser {
 
 	private Map<String, TreeNode> map = null;
 	TargetTree root = null;
+	String script = "";
 
 	public Parser(Document doc) throws Exception {
 		NodeList rule_list = doc.getElementsByTagName("RULE");
@@ -46,13 +47,12 @@ public class Parser {
 
 		// ---------get rule---------
 		for (int i = 0; i < rule_list.getLength(); i++) {
-
 			ArrayList<XMLTreeNode> rcpTree = new ArrayList<XMLTreeNode>();
 			ArrayList<XMLTreeNode> preqTree = new ArrayList<XMLTreeNode>();
 
 			// --------get target----------
 			Node targetNode = getNodeByTagInSon(rule_list.item(i), TAG_TARGET);
-			targetName = concatName(targetNode);// insert if
+			targetName = concatName(targetNode);
 
 			// --------get PREQS-------
 			Node preqsNode = getNodeByTagInSon(rule_list.item(i), TAG_PREQS);
@@ -92,28 +92,24 @@ public class Parser {
 					if (x != null) {
 						rcpTree.add(x);
 					}
-					// System.out.println();
 				}
 			}
 			// --------- built XMLTreeNode --------
 			XMLTreeNode x = new XMLTreeNode(targetName, preqTree, rcpTree);
 			ruleTree.add(x); // add target tree to rule
 			combineRcpLeafs(x);
-			// x.print("");
-			// x.printRcp("");
-			// System.out.println();
 			String rcp = x.combinRcp();
-			// (TreeNode pParent, ArrayList<TreeNode> pChildren,String name,
-			// String rcps)
+			/*
+			 * (TreeNode pParent, ArrayList<TreeNode> pChildren,String name,
+			 * String rcps)
+			 */
 			TreeNode t = new TargetTree(null, null, targetName, rcp);
 			map.put(targetName, t);
-			// System.out.println("rcp:\n"+x.combinRcp()+"\n");
 		}
 
 		// -----iterator ruleTree -------
 		for (Iterator<XMLTreeNode> i = ruleTree.iterator(); i.hasNext();) {
 			XMLTreeNode node = i.next();
-
 			for (Iterator<XMLTreeNode> j = node.getPrerequisite().iterator(); j
 					.hasNext();) {
 				XMLTreeNode preqsNode = j.next();
@@ -122,12 +118,8 @@ public class Parser {
 				String a = "";
 				for (int t = 0; t < targets.length; t++) {
 					a = targets[t];
-					// work for paper example + " " + targets[t + 1];
 					if (map.get(a) != null) {
 						((TargetTree) map.get(a)).setName(targets[t]);
-						// + targets[t + 1]);
-						// map.get(node.getTarget()).getpChildren()
-						// .add(map.get(a));
 						TargetTree fatherNode = (TargetTree) map.get(node
 								.getTarget());
 						TargetTree sonNode = (TargetTree) map.get(a);
@@ -144,7 +136,6 @@ public class Parser {
 						}
 
 					}
-					// t = t + 1;
 				}
 			}
 		}
@@ -154,11 +145,39 @@ public class Parser {
 		for (String key : map.keySet()) {
 			if (map.get(key).getpParent() == null) {
 				root.getpChildren().add(map.get(key));
-				System.out.println();
-				System.out.println(map.get(key));
+				String a = printScript(map.get(key));
+				// int size = ((TargetTree) map.get(key)).getRcps().length();
+				// //
+				// System.out.println(((TargetTree)map.get(key)).getRcps().substring(2,
+				// // size-1));
+				// a += ((TargetTree) map.get(key)).getRcps().substring(2,
+				// size - 1);
+				// // System.out.println(a);
+			}
+
+		}
+
+	}
+
+	// -----printScript----
+	public String printScript(TreeNode tt) {
+		if (!tt.hasChild()) {
+			return null;
+		}
+		int size = 0;
+		ArrayList<TreeNode> childrenList = tt.getChilds();
+		if (tt.hasChild()) {
+			for (int i = 0; i < childrenList.size(); i++) {
+				printScript(childrenList.get(i));
+				size = ((TargetTree) childrenList.get(i)).getRcps().length();
+				script += ((TargetTree) childrenList.get(i)).getRcps()
+						.substring(2, size - 1) + "\n";
 			}
 		}
-		// JFrame tFrame = new GraphFrame(map);
+		size = ((TargetTree) tt).getRcps().length();
+		script += ((TargetTree) tt).getRcps().substring(2, size - 1)+"\n";
+		System.out.println(script);
+		return script;
 	}
 
 	public Map<String, TreeNode> getParseredMap() {
@@ -202,11 +221,13 @@ public class Parser {
 		return null;
 	}
 
+	// ---------parseSelectNode-------
 	static public ArrayList<XMLTreeNode> parseSelectNode(Node select) {
 		NodeList sele_children = select.getChildNodes();
+		// -----sel-list-----
 		Node sel_list = sele_children.item(0);
 		Node item = sel_list.getChildNodes().item(0);
-		// getNodeByTagInSon sel_list item
+
 		// ----------- CR ------------
 		Node cr = getNodeByTagInSonWideFrist(select, "CR");
 		String condition = "";
@@ -257,6 +278,7 @@ public class Parser {
 		return selectTree;
 	}
 
+	// --------if 'CONCAT' label---------
 	static public String concatName(Node node) {
 		if (node == null) {
 			return "";
@@ -301,6 +323,7 @@ public class Parser {
 		}
 	}
 
+	// getNodeByTagInSon
 	static public Node getNodeByTagInSon(Node node, String tagNam) {
 		if (node.getNodeName().trim().equals(tagNam)) {
 			return node;
@@ -319,6 +342,7 @@ public class Parser {
 		return null;
 	}
 
+	// getNodeByTagInSon---------WideFrist
 	static public Node getNodeByTagInSonWideFrist(Node node, String tagNam) {
 		if (node.getNodeName().trim().equals(tagNam)) {
 			return node;
@@ -342,6 +366,7 @@ public class Parser {
 		return null;
 	}
 
+	// --------concat-----------
 	static public XMLTreeNode concat(Node n) {
 		if (!n.hasChildNodes()) {
 			String name = n.getTextContent().trim();
