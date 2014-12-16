@@ -161,10 +161,9 @@ public class Parser {
 
 	// -----printScript----
 	public String printScript(TreeNode tt) {
-		if (!tt.hasChild()) {
-			return null;
-		}
 		int size = 0;
+		int Layer = tt.getLayer();
+		
 		ArrayList<TreeNode> childrenList = tt.getChilds();
 		if (tt.hasChild()) {
 			for (int i = 0; i < childrenList.size(); i++) {
@@ -174,8 +173,11 @@ public class Parser {
 						.substring(2, size - 1) + "\n";
 			}
 		}
-		size = ((TargetTree) tt).getRcps().length();
-		script += ((TargetTree) tt).getRcps().substring(2, size - 1)+"\n";
+//		size = ((TargetTree)tt).getRcps().length();
+//		if(tt.getLayer()==Layer){
+//			script +=((TargetTree)tt).getRcps()
+//					.substring(2, size - 1) + "\n";
+//		}
 		System.out.println(script);
 		return script;
 	}
