@@ -1,6 +1,3 @@
-bar =
-foo = $(bar)
-
 A:B C E
 	echo a
 B: C E

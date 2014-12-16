@@ -52,4 +52,33 @@ public class TargetTree extends TreeNode {
 	public void setEdge(Map<String, String> edge) {
 		this.edge = edge;
 	}
+	
+	// 递归返回自己和子节点的rcp，每行用\n分割
+	public String getScripts() {
+		String res = "";
+		String childScript = "";
+		//先访问儿子
+		if (pChildren != null && !pChildren.isEmpty()){
+			for(TreeNode i : pChildren){
+				if (i instanceof TargetTree) {
+					childScript = ((TargetTree)i).getScripts();
+					if (!childScript.trim().equals("")) {
+						if(res.equals("")) {
+							res = childScript.trim();
+						} else {
+							res = res + "\n"+ childScript.trim();
+						}
+					}
+				}
+			}
+		}
+		
+		//访问自己
+		if(res.equals("")) {
+			res = rcps;
+		} else {
+			res = res+"\n"+rcps;
+		}
+		return res;
+	}
 }

@@ -99,6 +99,10 @@ public class Parser {
 			ruleTree.add(x); // add target tree to rule
 			combineRcpLeafs(x);
 			String rcp = x.combinRcp();
+			//rcp是递归的取xmlTreeNode中的target的，所以把自己也取了，所以在这里处理一下，去掉自己
+			rcp = rcp.substring(targetName.length()+1);
+			
+			
 			/*
 			 * (TreeNode pParent, ArrayList<TreeNode> pChildren,String name,
 			 * String rcps)
@@ -145,7 +149,7 @@ public class Parser {
 		for (String key : map.keySet()) {
 			if (map.get(key).getpParent() == null) {
 				root.getpChildren().add(map.get(key));
-				String a = printScript(map.get(key));
+//				String a = printScript(map.get(key));
 				// int size = ((TargetTree) map.get(key)).getRcps().length();
 				// //
 				// System.out.println(((TargetTree)map.get(key)).getRcps().substring(2,
@@ -157,29 +161,6 @@ public class Parser {
 
 		}
 
-	}
-
-	// -----printScript----
-	public String printScript(TreeNode tt) {
-		int size = 0;
-		int Layer = tt.getLayer();
-		
-		ArrayList<TreeNode> childrenList = tt.getChilds();
-		if (tt.hasChild()) {
-			for (int i = 0; i < childrenList.size(); i++) {
-				printScript(childrenList.get(i));
-				size = ((TargetTree) childrenList.get(i)).getRcps().length();
-				script += ((TargetTree) childrenList.get(i)).getRcps()
-						.substring(2, size - 1) + "\n";
-			}
-		}
-//		size = ((TargetTree)tt).getRcps().length();
-//		if(tt.getLayer()==Layer){
-//			script +=((TargetTree)tt).getRcps()
-//					.substring(2, size - 1) + "\n";
-//		}
-		System.out.println(script);
-		return script;
 	}
 
 	public Map<String, TreeNode> getParseredMap() {
