@@ -5,7 +5,10 @@ B: C E
 C: E
 	echo c
 ifdef bar
-	echo g
+	echo bar
+endif
+ifdef foo
+	echo foo
 endif
 
 
@@ -21,7 +24,6 @@ E:
 	echo e
 F:
 	echo f
-G:  
-	echo g
+
 
 
