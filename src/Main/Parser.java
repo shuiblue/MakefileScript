@@ -97,7 +97,7 @@ public class Parser {
 			// --------- built XMLTreeNode --------
 			XMLTreeNode x = new XMLTreeNode(targetName, preqTree, rcpTree);
 			ruleTree.add(x); // add target tree to rule
-			combineRcpLeafs(x);
+		//	combineRcpLeafs(x);
 			String rcp = x.combinRcp();
 			//rcp是递归的取xmlTreeNode中的target的，所以把自己也取了，所以在这里处理一下，去掉自己
 			rcp = rcp.substring(targetName.length()+1);
@@ -163,47 +163,47 @@ public class Parser {
 
 	}
 
+	
+
+//	static public ArrayList<XMLTreeNode> combineRcpLeafs(XMLTreeNode root) {
+//		ArrayList<XMLTreeNode> add = new ArrayList<XMLTreeNode>();
+//		ArrayList<XMLTreeNode> del = new ArrayList<XMLTreeNode>();
+//		ArrayList<XMLTreeNode> tmp = null;
+//
+//		if (root.getRcp() != null) {
+//			// ArrayList<XMLTreeNode> copy = new ArrayList<XMLTreeNode>();
+//			// copy.addAll(root.getRcp());
+//			for (Iterator<XMLTreeNode> i = root.getRcp().iterator(); i
+//					.hasNext();) {
+//				XMLTreeNode node = i.next();
+//				node.setParent(root);
+//				tmp = combineRcpLeafs(node);
+//				if (tmp != null) {
+//					add.addAll(tmp);
+//					del.add(node);
+//				}
+//			}
+//			root.getRcp().addAll(0, add);
+//			root.getRcp().removeAll(del);
+//		}
+//
+//		if ((root.getTarget() == null || root.getTarget().equals(""))
+//				&& (root.getPrerequisite() == null || root.getPrerequisite()
+//						.isEmpty())) {
+//
+//			for (Iterator<XMLTreeNode> i = root.getRcp().iterator(); i
+//					.hasNext();) {
+//				XMLTreeNode node = i.next();
+//				node.setParent(root.getParent());
+//			}
+//			return root.getRcp();
+//
+//		}
+//		return null;
+//	}
 	public Map<String, TreeNode> getParseredMap() {
 		return map;
 	}
-
-	static public ArrayList<XMLTreeNode> combineRcpLeafs(XMLTreeNode root) {
-		ArrayList<XMLTreeNode> add = new ArrayList<XMLTreeNode>();
-		ArrayList<XMLTreeNode> del = new ArrayList<XMLTreeNode>();
-		ArrayList<XMLTreeNode> tmp = null;
-
-		if (root.getRcp() != null) {
-			// ArrayList<XMLTreeNode> copy = new ArrayList<XMLTreeNode>();
-			// copy.addAll(root.getRcp());
-			for (Iterator<XMLTreeNode> i = root.getRcp().iterator(); i
-					.hasNext();) {
-				XMLTreeNode node = i.next();
-				node.setParent(root);
-				tmp = combineRcpLeafs(node);
-				if (tmp != null) {
-					add.addAll(tmp);
-					del.add(node);
-				}
-			}
-			root.getRcp().addAll(0, add);
-			root.getRcp().removeAll(del);
-		}
-
-		if ((root.getTarget() == null || root.getTarget().equals(""))
-				&& (root.getPrerequisite() == null || root.getPrerequisite()
-						.isEmpty())) {
-
-			for (Iterator<XMLTreeNode> i = root.getRcp().iterator(); i
-					.hasNext();) {
-				XMLTreeNode node = i.next();
-				node.setParent(root.getParent());
-			}
-			return root.getRcp();
-
-		}
-		return null;
-	}
-
 	// ---------parseSelectNode-------
 	static public ArrayList<XMLTreeNode> parseSelectNode(Node select) {
 		NodeList sele_children = select.getChildNodes();
