@@ -1,5 +1,5 @@
 A:B C E
-	echo a
+	echo a $pth
 B: C E
 	echo b
 C: E
@@ -10,6 +10,7 @@ endif
 ifdef foo
 	echo foo
 endif
+
 
 
 ifdef foo
@@ -24,6 +25,3 @@ E:
 	echo e
 F:
 	echo f
-
-
-
